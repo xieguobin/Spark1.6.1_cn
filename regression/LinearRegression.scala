@@ -117,7 +117,7 @@ class LinearRegressionWithSGD private[mllib] (
  *
  */
 @Since("0.8.0")
-object LinearRegressionWithSGD {
+object LinearRegressionWithSGD {                //伴生对象，train静态方法
 
   /**
    * Train a Linear Regression model given an RDD of (label, features) pairs. We run a fixed number
@@ -135,14 +135,14 @@ object LinearRegressionWithSGD {
    *
    */
   @Since("1.0.0")
-  def train(
-      input: RDD[LabeledPoint],
-      numIterations: Int,
-      stepSize: Double,
-      miniBatchFraction: Double,
-      initialWeights: Vector): LinearRegressionModel = {
-    new LinearRegressionWithSGD(stepSize, numIterations, miniBatchFraction)
-      .run(input, initialWeights)
+  def train(                                               //train方法
+      input: RDD[LabeledPoint],                            //训练样本
+      numIterations: Int,                                  //迭代次数
+      stepSize: Double,                                    //迭代步长
+      miniBatchFraction: Double,                           //参与计算样本比例
+      initialWeights: Vector): LinearRegressionModel = {   //初始权重
+    new LinearRegressionWithSGD(stepSize, numIterations, miniBatchFraction)      //调用伴生类
+      .run(input, initialWeights)                          //调用run方法
   }
 
   /**
