@@ -6,6 +6,7 @@
 //二、建模实例
 package org.apache.spark.mllib.regression
 
+import org.apache.spark.{SparkConf,SparkContext}
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.mllib.regression.LinearRegressionModel
 import org.apache.spark.mllib.regression.LinearRegressionWithSGD
