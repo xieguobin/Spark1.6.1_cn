@@ -40,15 +40,15 @@ class LinearRegressionModel @Since("1.1.0") (
   extends GeneralizedLinearModel(weights, intercept) with RegressionModel with Serializable
   with Saveable with PMMLExportable {
 
-  override protected def predictPoint(
+  override protected def predictPoint(                            //预测
       dataMatrix: Vector,
       weightMatrix: Vector,
       intercept: Double): Double = {
-    weightMatrix.toBreeze.dot(dataMatrix.toBreeze) + intercept
+    weightMatrix.toBreeze.dot(dataMatrix.toBreeze) + intercept    //线性回归公式，矩阵点积
   }
 
   @Since("1.3.0")
-  override def save(sc: SparkContext, path: String): Unit = {
+  override def save(sc: SparkContext, path: String): Unit = {     //模型保存
     GLMRegressionModel.SaveLoadV1_0.save(sc, path, this.getClass.getName, weights, intercept)
   }
 
@@ -56,10 +56,10 @@ class LinearRegressionModel @Since("1.1.0") (
 }
 
 @Since("1.3.0")
-object LinearRegressionModel extends Loader[LinearRegressionModel] {
+object LinearRegressionModel extends Loader[LinearRegressionModel] {                //伴生类
 
   @Since("1.3.0")
-  override def load(sc: SparkContext, path: String): LinearRegressionModel = {
+  override def load(sc: SparkContext, path: String): LinearRegressionModel = {      //模型加载
     val (loadedClassName, version, metadata) = Loader.loadMetadata(sc, path)
     // Hard-code class name string in case it changes in the future
     val classNameV1_0 = "org.apache.spark.mllib.regression.LinearRegressionModel"
