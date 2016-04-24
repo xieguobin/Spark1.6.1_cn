@@ -86,17 +86,17 @@ object LinearRegressionModel extends Loader[LinearRegressionModel] {
  * See also the documentation for the precise formulation.
  */
 @Since("0.8.0")
-class LinearRegressionWithSGD private[mllib] (
-    private var stepSize: Double,
-    private var numIterations: Int,
-    private var miniBatchFraction: Double)
+class LinearRegressionWithSGD private[mllib] (                //随机梯度下降，损失函数f(weights) = 1/n ||A weights-y||^2^
+    private var stepSize: Double,                             //迭代步长
+    private var numIterations: Int,                           //迭代次数
+    private var miniBatchFraction: Double)                    //参与计算的样本比例
   extends GeneralizedLinearAlgorithm[LinearRegressionModel] with Serializable {
 
-  private val gradient = new LeastSquaresGradient()
-  private val updater = new SimpleUpdater()
+  private val gradient = new LeastSquaresGradient()           //最小平方损失函数的梯度下降，实例化最优化包中Gradient的类LeastSquaresGradient
+  private val updater = new SimpleUpdater()                   //简单梯度，无正则化，实例化最优化包中Updater的类SimpleUpdater
   @Since("0.8.0")
-  override val optimizer = new GradientDescent(gradient, updater)
-    .setStepSize(stepSize)
+  override val optimizer = new GradientDescent(gradient, updater)    //实例化最优化包中GradientDescent的类GradientDescent
+    .setStepSize(stepSize)                                           //setStepSize源于GradientDescent
     .setNumIterations(numIterations)
     .setMiniBatchFraction(miniBatchFraction)
 
@@ -105,7 +105,7 @@ class LinearRegressionWithSGD private[mllib] (
    * numIterations: 100, miniBatchFraction: 1.0}.
    */
   @Since("0.8.0")
-  def this() = this(1.0, 100, 1.0)
+  def this() = this(1.0, 100, 1.0)                              //默认参数
 
   override protected[mllib] def createModel(weights: Vector, intercept: Double) = {
     new LinearRegressionModel(weights, intercept)
@@ -135,11 +135,11 @@ object LinearRegressionWithSGD {                //伴生对象，train静态方�
    *
    */
   @Since("1.0.0")
-  def train(                                               //train方法
+  def train(                                               //train方法。Jlbas矩阵、Breeze数值计算、BLAS线性代数是基础
       input: RDD[LabeledPoint],                            //训练样本
       numIterations: Int,                                  //迭代次数
-      stepSize: Double,                                    //迭代步长
-      miniBatchFraction: Double,                           //参与计算样本比例
+      stepSize: Double,                                    //迭代步长，默认为1
+      miniBatchFraction: Double,                           //参与计算样本比例，默认为1
       initialWeights: Vector): LinearRegressionModel = {   //初始权重
     new LinearRegressionWithSGD(stepSize, numIterations, miniBatchFraction)      //调用伴生类
       .run(input, initialWeights)                          //调用run方法
