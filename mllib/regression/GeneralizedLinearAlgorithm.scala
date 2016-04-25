@@ -237,7 +237,7 @@ abstract class GeneralizedLinearAlgorithm[M <: GeneralizedLinearModel]
   /**
    * Run the algorithm with the configured parameters on an input RDD
    * of LabeledPoint entries starting from the initial weights provided.
-   *
+   * 运行训练算法run方法
    */
   @Since("1.0.0")
   def run(input: RDD[LabeledPoint], initialWeights: Vector): M = {
@@ -251,7 +251,7 @@ abstract class GeneralizedLinearAlgorithm[M <: GeneralizedLinearModel]
         + " parent RDDs are also uncached.")
     }
 
-    // Check the data properties before running the optimizer
+    // Check the data properties before running the optimizer        //数据合法性验证
     if (validateData && !validators.forall(func => func(input))) {
       throw new SparkException("Input validation failed.")
     }
@@ -273,7 +273,7 @@ abstract class GeneralizedLinearAlgorithm[M <: GeneralizedLinearModel]
      * scaled space. Then we transform the coefficients from the scaled space to the original scale
      * as GLMNET and LIBSVM do.
      *
-     * Currently, it's only enabled in LogisticRegressionWithLBFGS
+     * Currently, it's only enabled in LogisticRegressionWithLBFGS  //数据降维
      */
     val scaler = if (useFeatureScaling) {
       new StandardScaler(withStd = true, withMean = false).fit(input.map(_.features))
@@ -284,7 +284,7 @@ abstract class GeneralizedLinearAlgorithm[M <: GeneralizedLinearModel]
     // Prepend an extra variable consisting of all 1.0's for the intercept.
     // TODO: Apply feature scaling to the weight vector instead of input data.
     val data =
-      if (addIntercept) {
+      if (addIntercept) {                                          //判断是否增加截距          
         if (useFeatureScaling) {
           input.map(lp => (lp.label, appendBias(scaler.transform(lp.features)))).cache()
         } else {
@@ -304,21 +304,21 @@ abstract class GeneralizedLinearAlgorithm[M <: GeneralizedLinearModel]
      * the intercept should be set as the average of response.
      */
     val initialWeightsWithIntercept = if (addIntercept && numOfLinearPredictor == 1) {
-      appendBias(initialWeights)
+      appendBias(initialWeights)                                  //初始化权重特征
     } else {
       /** If `numOfLinearPredictor > 1`, initialWeights already contains intercepts. */
       initialWeights
     }
 
-    val weightsWithIntercept = optimizer.optimize(data, initialWeightsWithIntercept)
+    val weightsWithIntercept = optimizer.optimize(data, initialWeightsWithIntercept)    //最优化包下面GradientDescent.scala引用
 
-    val intercept = if (addIntercept && numOfLinearPredictor == 1) {
+    val intercept = if (addIntercept && numOfLinearPredictor == 1) {                    //获得偏置项 截距
       weightsWithIntercept(weightsWithIntercept.size - 1)
     } else {
       0.0
     }
 
-    var weights = if (addIntercept && numOfLinearPredictor == 1) {
+    var weights = if (addIntercept && numOfLinearPredictor == 1) {                      //获取权重
       Vectors.dense(weightsWithIntercept.toArray.slice(0, weightsWithIntercept.size - 1))
     } else {
       weightsWithIntercept
@@ -332,7 +332,7 @@ abstract class GeneralizedLinearAlgorithm[M <: GeneralizedLinearModel]
      * will not be changed. w_i = w_i' / v_i where w_i' is the coefficient in the scaled space, w_i
      * is the coefficient in the original space, and v_i is the variance of the column i.
      */
-    if (useFeatureScaling) {
+    if (useFeatureScaling) {                                                           //对降维，进行权重还原
       if (numOfLinearPredictor == 1) {
         weights = scaler.transform(weights)
       } else {
@@ -369,6 +369,6 @@ abstract class GeneralizedLinearAlgorithm[M <: GeneralizedLinearModel]
       data.unpersist(false)
     }
 
-    createModel(weights, intercept)
+    createModel(weights, intercept)                                   //返回训练模型权重、截距项
   }
 }
