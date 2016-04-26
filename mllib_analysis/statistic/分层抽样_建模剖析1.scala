@@ -55,7 +55,7 @@ def sampleByKeyExact(
   
 //2、sampleByKey的实现
 //当我们需要不重复抽样时，我们需要用泊松抽样器来抽样。当需要重复抽样时，用伯努利抽样器抽样。sampleByKey的实现比较简单，它就是统一的随机抽样。
-//2.1 泊松抽样器
+//2.1 泊松抽样
 def getPoissonSamplingFunction[K: ClassTag, V: ClassTag](rdd: RDD[(K, V)],
       fractions: Map[K, Double],
       exact: Boolean,
@@ -77,7 +77,7 @@ def getPoissonSamplingFunction[K: ClassTag, V: ClassTag](rdd: RDD[(K, V)],
 }
 // getPoissonSamplingFunction返回的是一个函数，传递给mapPartitionsWithIndex处理每个分区的数据。这里RandomDataGenerator是一个随机生成器，它用于同时生成均匀值(uniform values)和泊松值(Poisson values)。
 
-//2.2 伯努利抽样器
+//2.2 伯努利抽样
 def getBernoulliSamplingFunction[K, V](rdd: RDD[(K, V)],
       fractions: Map[K, Double],
       exact: Boolean,
@@ -95,7 +95,7 @@ def getBernoulliSamplingFunction[K, V](rdd: RDD[(K, V)],
   
 //3、sampleByKeyExact的实现
 //sampleByKeyExact获取更准确的抽样结果，它的实现也分为两种情况，重复抽样和不重复抽样。前者使用泊松抽样器，后者使用伯努利抽样器。
-//3.1 泊松抽样器
+//3.1 泊松抽样
 val counts = Some(rdd.countByKey())
 //计算立即接受的样本数量，并且为每层生成候选名单
 val finalResult = getAcceptanceResults(rdd, true, fractions, counts, seed)
