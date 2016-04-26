@@ -10,7 +10,7 @@ import org.apache.spark.{SparkConf,SparkContext}
 import org.apache.spark.mllib.linalg.Vector
 import org.apache.spark.mllib.stat.{MultivariateStatisticalSummary, Statistics}
 
-object Lr01 extends App{
+object Summary_statistics extends App{
   val conf = new SparkConf().setAppName("Spark_Lr").setMaster("local")
   val sc = new SparkContext(conf)
   
