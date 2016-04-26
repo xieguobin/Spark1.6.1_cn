@@ -4,7 +4,7 @@
 
 
 //二、建模实例
-package org.apache.spark.mllib.regression
+package org.apache.spark.mllib_analysis.regression
 
 import org.apache.spark.{SparkConf,SparkContext}
 import org.apache.spark.mllib.regression.LabeledPoint
