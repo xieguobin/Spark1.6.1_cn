@@ -15,7 +15,7 @@ object Correlations extends App{
   val sc = new SparkContext(conf)
   
 //获取数据，转换成rdd类型
-val observations_path = sc.textFile("C:/my_install/spark/data/mllib2/sample_stat.txt")
+val observations_path = "C:/my_install/spark/data/mllib2/sample_stat.txt"
 val observations = sc.textFile(observations_path).map(_.split("\t")).map(f => f.map(f => f.toDouble))  
 val observations1 = observations.map(f => Vectors.dense(f))  
 
@@ -25,6 +25,12 @@ val corr2 = Statistics.corr(observations1, "spearman")
 val x1 = sc.parallelize(Array(1.0, 2.0, 3.0, 4.0))  
 val y1 = sc.parallelize(Array(5.0, 6.0, 6.0, 6.0))  
 val corr3 = Statistics.corr(x1, y1, "pearson") 
+
+println("corr1")
+println(corr1)
+println("corr2")
+println(corr2)
+println("corr3")
 
 // val data: RDD[Vector] = ... // note that each Vector is a row and not a column
 // calculate the correlation matrix using Pearson's method. Use "spearman" for Spearman's method.
