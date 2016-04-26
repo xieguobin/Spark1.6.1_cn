@@ -6,17 +6,6 @@
 //二、建模实例
 package org.apache.spark.mllib_analysis.statistic
 
-import org.apache.spark.mllib.linalg.Vector
-import org.apache.spark.mllib.stat.{MultivariateStatisticalSummary, Statistics}
-
-val observations: RDD[Vector] = ... // an RDD of Vectors
-
-// Compute column summary statistics.
-val summary: MultivariateStatisticalSummary = Statistics.colStats(observations)
-println(summary.mean) // a dense vector containing the mean value for each column
-println(summary.variance) // column-wise variance
-println(summary.numNonzeros) // number of nonzeros in each column
-
 import org.apache.spark.{SparkConf,SparkContext}
 import org.apache.spark.mllib.linalg.Vector
 import org.apache.spark.mllib.stat.{MultivariateStatisticalSummary, Statistics}
@@ -54,9 +43,9 @@ def computeColumnSummaryStatistics(): MultivariateStatisticalSummary = {
     updateNumRows(summary.count)
     summary
   }  
-  //调用RDD的treeAggregate方法，treeAggregate是聚合方法，它迭代处理RDD中的数据，其中，(aggregator, data) => aggregator.add(data)
-  //处理每条数据，将其添加到MultivariateOnlineSummarizer， (aggregator1, aggregator2) => aggregator1.merge(aggregator2)将不同分区
-  //的MultivariateOnlineSummarizer对象汇总。所以上述代码实现的重点是add方法和merge方法。它们都定义在MultivariateOnlineSummarizer中。 
+//调用RDD的treeAggregate方法，treeAggregate是聚合方法，它迭代处理RDD中的数据，其中，(aggregator, data) => aggregator.add(data)
+//处理每条数据，将其添加到MultivariateOnlineSummarizer， (aggregator1, aggregator2) => aggregator1.merge(aggregator2)将不同分区
+//的MultivariateOnlineSummarizer对象汇总。所以上述代码实现的重点是add方法和merge方法。它们都定义在MultivariateOnlineSummarizer中。 
   
 //2、add方法
 //使用在线算法来计算均值和方差
