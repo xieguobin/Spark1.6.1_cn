@@ -30,7 +30,7 @@ println("corr1")
 println(corr1)
 println("corr2")
 println(corr2)
-println("corr3")
+println("corr3:"+corr3)
 
 // val data: RDD[Vector] = ... // note that each Vector is a row and not a column
 // calculate the correlation matrix using Pearson's method. Use "spearman" for Spearman's method.
