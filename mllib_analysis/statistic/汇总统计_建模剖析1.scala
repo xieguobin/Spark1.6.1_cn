@@ -20,7 +20,7 @@ val observations = sc.textFile(observations_path).map(_.split("\t")).map(f => f.
 val observations1 = observations.map(f => Vectors.dense(f))  
 
 //统计计算
-val summary: MultivariateStatisticalSummary = Statistics.colStats(observations1)
+val summary: MultivariateStatisticalSummary = Statistics.colStats(observations1)        //colStats 主方法
 println(summary.max)         // a dense vector containing the mean value for each column  最大值
 println(summary.min)         // a dense vector containing the mean value for each column  最小值
 println(summary.mean)        // a dense vector containing the mean value for each column  均值
@@ -43,9 +43,10 @@ def computeColumnSummaryStatistics(): MultivariateStatisticalSummary = {
     updateNumRows(summary.count)
     summary
   }  
-//调用RDD的treeAggregate方法，treeAggregate是聚合方法，它迭代处理RDD中的数据，其中，(aggregator, data) => aggregator.add(data)
-//处理每条数据，将其添加到MultivariateOnlineSummarizer， (aggregator1, aggregator2) => aggregator1.merge(aggregator2)将不同分区
-//的MultivariateOnlineSummarizer对象汇总。所以上述代码实现的重点是add方法和merge方法。它们都定义在MultivariateOnlineSummarizer中。 
+//调用RDD的treeAggregate方法，treeAggregate是聚合方法，它迭代处理RDD中的数据。
+//其中，(aggregator, data) => aggregator.add(data)处理每条数据，将其添加到MultivariateOnlineSummarizer。
+//(aggregator1, aggregator2) => aggregator1.merge(aggregator2)将不同分区的MultivariateOnlineSummarizer对象汇总。
+//实现的重点是add方法和merge方法。它们都定义在MultivariateOnlineSummarizer中。 下面描述这两种方法。
   
 //2、add方法
 //使用在线算法来计算均值和方差
