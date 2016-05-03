@@ -78,7 +78,7 @@ private[stat] object PearsonCorrelation extends Correlation with Logging {
           containNaN = true
           Double.NaN
         } else {
-          cov(i, j) / (sigma * cov(i, i))
+          cov(i, j) / (sigma * cov(i, i))                     //相关系数计算cov(x,y)/(sigma_x * sigma_y)
         }
         cov(i, j) = corr
         cov(j, i) = corr
