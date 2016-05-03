@@ -42,7 +42,7 @@ object Statistics {
    * @return [[MultivariateStatisticalSummary]] object containing column-wise summary statistics.
    */
   @Since("1.1.0")
-  def colStats(X: RDD[Vector]): MultivariateStatisticalSummary = {
+  def colStats(X: RDD[Vector]): MultivariateStatisticalSummary = {                //colStats定义
     new RowMatrix(X).computeColumnSummaryStatistics()
   }
 
@@ -54,7 +54,7 @@ object Statistics {
    * @return Pearson correlation matrix comparing columns in X.
    */
   @Since("1.1.0")
-  def corr(X: RDD[Vector]): Matrix = Correlations.corrMatrix(X)
+  def corr(X: RDD[Vector]): Matrix = Correlations.corrMatrix(X)                   //corr定义,调用corrMatrix(X)
 
   /**
    * Compute the correlation matrix for the input RDD of Vectors using the specified method.
@@ -85,7 +85,7 @@ object Statistics {
    * @return A Double containing the Pearson correlation between the two input RDD[Double]s
    */
   @Since("1.1.0")
-  def corr(x: RDD[Double], y: RDD[Double]): Double = Correlations.corr(x, y)
+  def corr(x: RDD[Double], y: RDD[Double]): Double = Correlations.corr(x, y)         //corr定义,调用corr(x, y)
 
   /**
    * Java-friendly version of [[corr()]]
@@ -133,7 +133,7 @@ object Statistics {
    *         the method used, and the null hypothesis.
    */
   @Since("1.1.0")
-  def chiSqTest(observed: Vector, expected: Vector): ChiSqTestResult = {
+  def chiSqTest(observed: Vector, expected: Vector): ChiSqTestResult = {                    //卡方检验定义,调用chiSquared(observed, expected)
     ChiSqTest.chiSquared(observed, expected)
   }
 
@@ -194,7 +194,7 @@ object Statistics {
    *        statistic, p-value, and null hypothesis.
    */
   @Since("1.5.0")
-  def kolmogorovSmirnovTest(data: RDD[Double], cdf: Double => Double)
+  def kolmogorovSmirnovTest(data: RDD[Double], cdf: Double => Double)                        //kolmogorovSmirnov检验定义
     : KolmogorovSmirnovTestResult = {
     KolmogorovSmirnovTest.testOneSample(data, cdf)
   }
