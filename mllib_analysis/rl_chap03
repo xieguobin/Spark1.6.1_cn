@@ -24,3 +24,35 @@ t discrete time step
 T, T (t) final time step of an episode, or of the episode including time t
 At action at time t
 St state at time t, typically due, stochastically, to St−1 and At−1
+Rt reward at time t, typically due, stochastically, to St−1 and At−1 Gt return (cumulative discounted reward) following time t
+t n-step return (Section 7.1)
+Lt λ-return (Section 7.2)
+δt temporal-difference error at t (a random variable, even though not upper case)
+Et(s) eligibility trace at time t for state s
+Et(s, a) eligibility trace at time t for a state–action pair
+et vector of eligibility traces at time t
+π policy, decision-making rule
+π(s) action taken in state s under deterministic policy π
+π(a|s) probability of taking action a in state s under stochastic policy π
+p(s1, r|s, a) probability of transition to state s1 with reward r, from state s taking action a
+p(s1|s, a) probability of transition to state s1, from state s taking action a
+μ behavior policy used to select actions while estimating values for policy π
+t importance sampling ratio for time t to time k − 1 > t (Section 5.5)
+vπ (s) value of state s under policy π (expected return)
+v∗(s) value of state s under the optimal policy
+qπ (s, a) value of taking action a in state s under policy π
+q∗(s, a) value of taking action a in state s under the optimal policy
+V, Vt array estimates of state-value function vπ or v∗
+Q, Qt array estimates of action-value function qπ or q∗
+θ, θt vector of weights underlying an approximate value function or policy
+θi, θt,i ith component of learnable weight vector
+n number of features and modifiable weights in φ and θ
+m number of 1s in a sparse binary feature vector
+vˆ(s,θ) approximate value of state s given weight vector θ
+qˆ(s, a, θ) approximate value of state–action pair s, a given weight vector θ φ(s) vector of features visible when in state s
+φ(s, a) vector of features visible when in state s taking action a φi(s), φi(s, a) ith component of feature vector
+φt shorthand for φ(St) or φ(St, At)
+θTφ inner product of vectors, θTφ .
+θiφi; e.g., vˆ(s,θ) .
+θTφ(s)
+h(s, a) learned preference for selecting action a in state s
